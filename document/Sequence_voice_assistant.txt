@@ -1,0 +1,54 @@
+sequenceDiagram
+    participant User
+    participant main as main()
+    participant speak as speak()
+    participant gTTS as gTTS
+    participant playsound as playsound
+    participant listen as listen()
+    participant SpeechRecognition as SpeechRecognition
+    participant Microphone as Microphone
+
+    User->>main: Start Program
+    main->>speak: speak("สวัสดีค่ะ มีอะไรให้ช่วยไหมคะ")
+    speak->>gTTS: Generate MP3 from text
+    gTTS-->>speak: response.mp3 file created
+    speak->>playsound: Play response.mp3
+    playsound-->>speak: Sound finished playing
+    speak-->>main: (Return)
+
+    loop while True
+        main->>listen: listen()
+        listen->>Microphone: Start listening
+        Note over listen,Microphone: User speaks a command (e.g., "เวลา")
+        Microphone-->>listen: Audio input
+        listen->>SpeechRecognition: Send audio for conversion
+        SpeechRecognition->>SpeechRecognition: Connect to Google API
+        SpeechRecognition-->>listen: Returns recognized text (e.g., "เวลา")
+        listen-->>main: Returns command text
+
+        main->>main: Process command (if/elif)
+        alt if "เวลา" in command
+            main->>speak: speak("ตอนนี้เวลา...")
+            speak->>gTTS: Generate MP3 from text
+            gTTS-->>speak: response.mp3 file created
+            speak->>playsound: Play response.mp3
+            playsound-->>speak: Sound finished playing
+            speak-->>main: (Return)
+        else if "หยุด" in command
+            main->>speak: speak("ยินดีให้บริการค่ะ...")
+            speak->>gTTS: Generate MP3 from text
+            gTTS-->>speak: response.mp3 file created
+            speak->>playsound: Play response.mp3
+            playsound-->>speak: Sound finished playing
+            speak-->>main: (Return)
+            main->>main: Break loop
+        else
+            main->>speak: speak("ขอโทษค่ะ...")
+            speak->>gTTS: Generate MP3 from text
+            gTTS-->>speak: response.mp3 file created
+            speak->>playsound: Play response.mp3
+            playsound-->>speak: Sound finished playing
+            speak-->>main: (Return)
+        end
+    end
+    main-->>User: Program ends
