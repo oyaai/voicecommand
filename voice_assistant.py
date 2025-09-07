@@ -4,7 +4,6 @@ from playsound import playsound
 import os
 import time
 
-# --- ฟังก์ชันสำหรับให้ AI พูดตอบกลับ ---
 def speak(text):
     """
     แปลงข้อความเป็นเสียงและเล่นไฟล์เสียง.
@@ -12,9 +11,6 @@ def speak(text):
     print(f"Assistant: {text}")
     tts = gTTS(text=text, lang='th')
     
-    # กำหนด path สำหรับไฟล์เสียง โดยให้อยู่ในโฟลเดอร์เดียวกับสคริปต์
-    # os.path.dirname(__file__) จะหา path ของไฟล์ปัจจุบัน
-    # และ os.path.join จะช่วยรวม path ให้ถูกต้อง
     script_dir = os.path.dirname(os.path.abspath(__file__))
     filename = os.path.join(script_dir, "response.mp3")
 
@@ -23,9 +19,7 @@ def speak(text):
         playsound(filename)
     except Exception as e:
         print(f"Error: Could not save or play sound file. Details: {e}")
-        # เพิ่มการจัดการข้อผิดพลาด เพื่อให้โปรแกรมไม่หยุดทำงาน
-        
-# --- ฟังก์ชันสำหรับรับคำสั่งด้วยเสียง ---
+
 def listen():
     """
     ฟังเสียงจากไมโครโฟนและแปลงเป็นข้อความ.
@@ -48,7 +42,6 @@ def listen():
         print(f"Assistant: เกิดข้อผิดพลาดในการเชื่อมต่อกับ Google Speech Recognition; {e}")
         return ""
 
-# --- ลูปหลักของโปรแกรม ---
 def main():
     """
     ลูปหลักของโปรแกรมสำหรับรับคำสั่งและตอบสนอง.
@@ -58,7 +51,6 @@ def main():
     while True:
         command = listen()
         
-        # --- กำหนดคำสั่งต่างๆ ที่ต้องการให้ AI ทำงาน ---
         if "สวัสดี" in command:
             speak("สวัสดีค่ะ ยินดีที่ได้คุยด้วยค่ะ")
         elif "ชื่ออะไร" in command:
